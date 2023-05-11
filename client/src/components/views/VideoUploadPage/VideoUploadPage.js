@@ -21,6 +21,9 @@ function VideoUploadPage() {
   const [Description, setDescription] = useState('');
   const [Private, setPrivate] = useState(0);
   const [Category, setCategory] = useState('Film & Animation');
+  const [FilePath, setFilePath] = useState('');
+  const [Duration, setDuration] = useState('');
+  const [ThumbnailPath, setThumbnailPath] = useState('');
 
   const onTitleChange = (e) => {
     setVideoTitle(e.currentTarget.value);
@@ -49,6 +52,24 @@ function VideoUploadPage() {
     axios.post('/api/video/uploadfiles', formData, config).then((response) => {
       if (response.data.success) {
         console.log(response.data);
+
+        let variable = {
+          url: response.data.url,
+          fileName: response.data.fileName,
+        };
+
+        setFilePath(response.data.url);
+
+        axios.post('/api/video/thumbnail', variable).then((response) => {
+          if (response.data.success) {
+            console.log(response.data);
+
+            setDuration(response.data.fileDuration);
+            setThumbnailPath(response.data.url);
+          } else {
+            alert('썸네일 생성에 실패했습니다.');
+          }
+        });
       } else {
         alert('비디오 업로드를 실패했습니다.');
       }
@@ -61,7 +82,7 @@ function VideoUploadPage() {
     <Container>
       <UploadForm action="">
         <Title>Upload Video</Title>
-        <div>
+        <UploadZone>
           {/* drop zone */}
           <DropzoneContainer {...getRootProps()}>
             <input {...getInputProps()} />
@@ -69,10 +90,15 @@ function VideoUploadPage() {
           </DropzoneContainer>
 
           {/* thumbnail */}
-          <div>
-            <img src="" alt="" />
-          </div>
-        </div>
+          {ThumbnailPath && (
+            <ThumbnailContainer>
+              <img
+                src={`http://localhost:8080/${ThumbnailPath}`}
+                alt="thumbnail"
+              />
+            </ThumbnailContainer>
+          )}
+        </UploadZone>
 
         <InputContainer>
           <label htmlFor="">Title</label>
@@ -144,14 +170,32 @@ const UploadForm = styled.form`
   width: 100%;
   gap: 1.5rem;
 `;
-const DropzoneContainer = styled.div`
-  background-color: #1c1c1e;
-  width: 45%;
+const UploadZone = styled.div`
+  display: flex;
+  justify-content: space-around;
+`;
+const ThumbnailContainer = styled.div`
+  width: 320px;
   height: 240px;
   display: flex;
   align-items: center;
   justify-content: center;
   border-radius: 0.75rem;
+  cursor: pointer;
+
+  img {
+    border-radius: 0.75rem;
+  }
+`;
+const DropzoneContainer = styled.div`
+  background-color: #1c1c1e;
+  width: 320px;
+  height: 240px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.75rem;
+  cursor: pointer;
 
   .icon {
     color: #fff;
@@ -189,8 +233,6 @@ const InputContainer = styled.div`
   }
 
   textarea {
-    /* border: 1px solid #c7c7cc; */
-    /* padding: 0.5rem; */
     resize: none;
   }
 

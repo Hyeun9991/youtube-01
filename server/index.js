@@ -15,6 +15,7 @@ mongoose
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use('/uploads', express.static('uploads'));
 app.use(cookieParser());
 
 app.use('/api/users', require('./routes/users'));
