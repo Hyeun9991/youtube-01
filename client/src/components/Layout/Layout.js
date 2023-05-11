@@ -16,10 +16,9 @@ function Layout(props) {
 
 const ContentContainer = styled.main`
   width: 90%;
-  height: 100vh;
+  height: auto;
   margin: 0 auto;
   margin-top: 70px;
-  padding: 1rem;
 `
 
 

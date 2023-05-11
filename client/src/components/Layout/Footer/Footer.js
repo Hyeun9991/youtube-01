@@ -17,7 +17,7 @@ function Footer() {
           </li>
           <li>
             <Link to="https://github.com/Hyeun9991" target="_blank">
-              github
+              Github
             </Link>
           </li>
         </Menu>
@@ -27,7 +27,7 @@ function Footer() {
 }
 
 const FooterWrapper = styled.div`
-  background-color: #000;
+  background-color: #1c1c1e;
   width: 100%;
   height: 120px;
 `;
@@ -45,11 +45,11 @@ const Logo = styled.h1`
   align-items: center;
 
   a {
-    color: #fff;
+    color: #f2f2f7;
     text-decoration: none;
     text-transform: uppercase;
     font-size: 14px;
-    font-weight: normal;
+    font-weight: 700;
   }
 `;
 const Menu = styled.ul`
@@ -61,19 +61,14 @@ const Menu = styled.ul`
   }
 
   a {
-    color: #fff;
+    color: #f2f2f7;
     text-decoration: none;
-    text-transform: uppercase;
     font-size: 14px;
     opacity: 0.7;
 
     &:hover {
       opacity: 1;
-    }
-
-    &.active {
-      opacity: 1;
-      font-weight: 700;
+      text-decoration: underline;
     }
   }
 `;

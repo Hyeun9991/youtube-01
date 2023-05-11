@@ -6,7 +6,7 @@ import Auth from './hoc/auth';
 import Layout from './components/Layout/Layout';
 
 function App() {
-  const AuthenticLandingPage = Auth(LandingPage, null);
+  const AuthenticLandingPage = Auth(LandingPage, true);
   const AuthenticLoginPage = Auth(LoginPage, false);
   const AuthenticRegisterPage = Auth(RegisterPage, false);
 

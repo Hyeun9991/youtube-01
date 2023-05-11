@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { registerUser } from '../../../_actions/user_action';
 import { useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
 
 function RegisterPage() {
   const navigate = useNavigate();
@@ -51,31 +52,122 @@ function RegisterPage() {
   };
 
   return (
-    <div>
-      <form
+    <Container>
+      <RegisterForm
         style={{ display: 'flex', flexDirection: 'column' }}
         onSubmit={onSubmitHandler}
       >
-        <label htmlFor="">Email</label>
-        <input type="email" value={Email} onChange={onEmailHandler} />
+        <Title>Create an account</Title>
+        <InputContainer>
+          <label htmlFor="">Email</label>
+          <input
+            type="email"
+            value={Email}
+            onChange={onEmailHandler}
+            placeholder="email"
+            required="required"
+          />
+        </InputContainer>
 
-        <label htmlFor="">Name</label>
-        <input type="text" value={Name} onChange={onNameHandler} />
+        <InputContainer>
+          <label htmlFor="">Name</label>
+          <input
+            type="text"
+            value={Name}
+            onChange={onNameHandler}
+            placeholder="name"
+            required="required"
+          />
+        </InputContainer>
 
-        <label htmlFor="">Password</label>
-        <input type="password" value={Password} onChange={onPasswordHandler} />
+        <InputContainer>
+          <label htmlFor="">Password</label>
+          <input
+            type="password"
+            value={Password}
+            onChange={onPasswordHandler}
+            placeholder="password"
+            required="required"
+          />
+        </InputContainer>
 
-        <label htmlFor="">Confirm Password</label>
-        <input
-          type="password"
-          value={ConfirmPassword}
-          onChange={onConfirmPasswordHandler}
-        />
-        <br />
-        <button type="submit">회원가입</button>
-      </form>
-    </div>
+        <InputContainer>
+          <label htmlFor="">Confirm Password</label>
+          <input
+            type="password"
+            value={ConfirmPassword}
+            onChange={onConfirmPasswordHandler}
+            placeholder="confirm password"
+            required="required"
+          />
+        </InputContainer>
+
+        <SubmitButton type="submit">Create account</SubmitButton>
+      </RegisterForm>
+    </Container>
   );
 }
+
+const Container = styled.div`
+  width: 100%;
+  height: calc(100vh - 190px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+const Title = styled.h1`
+  font-weight: 400;
+  font-size: 32px;
+`;
+const RegisterForm = styled.form`
+  width: 380px;
+  height: auto;
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+`;
+const InputContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+
+  label {
+    font-size: 12px;
+    display: none;
+  }
+
+  input {
+    background-color: transparent;
+    border: none;
+    border-bottom: 1px solid #c7c7cc;
+    outline: none;
+    height: 2rem;
+    padding: 1.2rem 0;
+    transition: 0.35s all;
+    font-size: 14px;
+
+    &::placeholder {
+      color: #c7c7cc;
+    }
+
+    &:focus {
+      border-color: #1c1c1e;
+    }
+
+    &:valid {
+      border-color: #1c1c1e;
+    }
+  }
+`;
+const SubmitButton = styled.button`
+  background-color: #1c1c1e;
+  color: #f2f2f7;
+  border: none;
+  height: 3rem;
+  border-radius: 8px;
+  font-weight: 400;
+  cursor: pointer;
+  margin-top: 1rem;
+  font-size: 14px;
+`;
 
 export default RegisterPage;

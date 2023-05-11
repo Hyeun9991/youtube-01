@@ -15,7 +15,7 @@ function Navbar() {
               className={({ isActive }) => (isActive ? 'active' : '')}
               to="/login"
             >
-              sign in
+              Sign In
             </NavLink>
           </li>
           <li>
@@ -25,7 +25,7 @@ function Navbar() {
               }
               to="/register"
             >
-              sign up
+              Sign Up
             </NavLink>
           </li>
         </Menu>
@@ -35,12 +35,14 @@ function Navbar() {
 }
 
 const Header = styled.nav`
-  background-color: #000;
+  background-color: #f2f2f79c;
+  backdrop-filter: blur(4px);
   height: 70px;
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
+  z-index: 1;
 `;
 const Container = styled.div`
   width: 90%;
@@ -56,11 +58,11 @@ const Logo = styled.h1`
   align-items: center;
 
   a {
-    color: #fff;
+    color: #1c1c1e;
     text-decoration: none;
     text-transform: uppercase;
     font-size: 14px;
-    font-weight: normal;
+    font-weight: 700;
   }
 `;
 const Menu = styled.ul`
@@ -72,14 +74,14 @@ const Menu = styled.ul`
   }
 
   a {
-    color: #fff;
+    color: #1c1c1e;
     text-decoration: none;
-    text-transform: uppercase;
     font-size: 14px;
     opacity: 0.7;
 
     &:hover {
       opacity: 1;
+      text-decoration: underline;
     }
 
     &.active {
