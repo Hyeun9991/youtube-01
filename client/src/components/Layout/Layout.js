@@ -18,7 +18,7 @@ const ContentContainer = styled.main`
   width: 90%;
   height: auto;
   margin: 0 auto;
-  margin-top: 70px;
+  margin-top: 56px;
 `
 
 

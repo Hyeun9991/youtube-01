@@ -78,13 +78,13 @@ function LoginPage() {
 
 const Container = styled.div`
   width: 100%;
-  height: calc(100vh - 190px);
+  height: calc(100vh - 176px);
   display: flex;
   align-items: center;
   justify-content: center;
 `;
 const Title = styled.h1`
-  font-weight: 400;
+  font-weight: 700;
   font-size: 32px;
   margin-bottom: 1rem;
 `;

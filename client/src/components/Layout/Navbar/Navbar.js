@@ -23,9 +23,10 @@ function Navbar() {
 }
 
 const Header = styled.nav`
-  background-color: #f2f2f79c;
-  backdrop-filter: blur(4px);
-  height: 70px;
+  /* background-color: #f2f2f79c; */
+  background-color: #f2f2f7;
+  /* backdrop-filter: blur(4px); */
+  height: 56px;
   position: fixed;
   top: 0;
   left: 0;
@@ -34,7 +35,7 @@ const Header = styled.nav`
 `;
 const Container = styled.div`
   width: 90%;
-  padding: 1rem;
+  padding: 0 1rem;
   height: 100%;
   display: flex;
   align-items: center;

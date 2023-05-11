@@ -6,7 +6,7 @@ const cookieParser = require("cookie-parser");
 const mongoose = require("mongoose");
 const { User } = require("./models/User");
 const { auth } = require("./middleware/auth");
-const port = 8080;
+
 
 // client에서 오는 정보를 server가 분석할 수 있게 설정
 app.use(express.json());
@@ -121,4 +121,5 @@ app.get("/api/users/logout", auth, async (req, res) => {
 });
 
 // port 연결 확인
+const port = 8080;
 app.listen(port, () => console.log(`Example app listening on port ${port}!`));
