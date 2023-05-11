@@ -3,6 +3,8 @@ import styled from 'styled-components';
 import { AiOutlinePlus } from 'react-icons/ai';
 import axios from 'axios';
 import { useDropzone } from 'react-dropzone';
+import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
 const PrivateOptions = [
   { value: 0, label: 'Private' },
@@ -17,6 +19,9 @@ const CategoryOptions = [
 ];
 
 function VideoUploadPage() {
+  const user = useSelector((state) => state.user);
+  const navigate = useNavigate();
+
   const [VideoTitle, setVideoTitle] = useState('');
   const [Description, setDescription] = useState('');
   const [Private, setPrivate] = useState(0);
@@ -78,9 +83,36 @@ function VideoUploadPage() {
 
   const { getRootProps, getInputProps } = useDropzone({ onDrop });
 
+  const onSubmit = (e) => {
+    e.preventDefault();
+
+    const variables = {
+      writer: user.userData._id,
+      title: VideoTitle,
+      description: Description,
+      privacy: Private,
+      filePath: FilePath,
+      category: Category,
+      duration: Duration,
+      thumbnail: ThumbnailPath,
+    };
+
+    axios.post('/api/video/uploadVideo', variables).then((response) => {
+      if (response.data.success) {
+        alert('성공적으로 업로드를 했습니다.');
+
+        setTimeout(() => {
+          navigate('/');
+        }, 3000);
+      } else {
+        alert('비디오 업로드에 실패 했습니다.');
+      }
+    });
+  };
+
   return (
     <Container>
-      <UploadForm action="">
+      <UploadForm onSubmit={onSubmit}>
         <Title>Upload Video</Title>
         <UploadZone>
           {/* drop zone */}
@@ -145,7 +177,7 @@ function VideoUploadPage() {
           })}
         </select>
 
-        <SubmitButton>Submit</SubmitButton>
+        <SubmitButton onClick={onSubmit}>Submit</SubmitButton>
       </UploadForm>
     </Container>
   );
@@ -181,7 +213,6 @@ const ThumbnailContainer = styled.div`
   align-items: center;
   justify-content: center;
   border-radius: 0.75rem;
-  cursor: pointer;
 
   img {
     border-radius: 0.75rem;

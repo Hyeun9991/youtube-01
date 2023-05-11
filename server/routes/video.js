@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-// const { Video } = require('../models/Video');
+const { Video } = require('../models/Video');
 const { auth } = require('../middleware/auth');
 const multer = require('multer');
 var ffmpeg = require('fluent-ffmpeg');
@@ -46,6 +46,26 @@ router.post('/uploadfiles', (req, res) => {
       fileName: res.req.file.filename,
     });
   });
+});
+
+// 비디오 정보들을 mongoDB에 저장
+router.post('/uploadVideo', async (req, res) => {
+  const video = new Video(req.body);
+
+  await video
+    .save()
+    .then(() => {
+      res.status(200).json({
+        success: true,
+      });
+    })
+    .catch((err) => {
+      console.log(err);
+      res.json({
+        success: false,
+        err: err,
+      });
+    }); // mongoDB에 저장
 });
 
 // 썸네일 생성 하고 비디오 러닝타임도 가져오기
