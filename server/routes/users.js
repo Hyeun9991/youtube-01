@@ -8,7 +8,7 @@ const { auth } = require('../middleware/auth');
 //=================================
 
 // 인증
-router.get('/auth', auth, (req, res) => {
+router.get('/auth', auth, async (req, res) => {
   try {
     // auth 미들웨어를 통과했다면 client에 데이터 전달
     res.status(200).json({

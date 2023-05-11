@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import Dropzone from 'react-dropzone';
 import { AiOutlinePlus } from 'react-icons/ai';
 import axios from 'axios';
+import { useDropzone } from 'react-dropzone';
 
 const PrivateOptions = [
   { value: 0, label: 'Private' },
@@ -48,11 +48,14 @@ function VideoUploadPage() {
     // file을 drop 하자마자 서버에 파일 전송
     axios.post('/api/video/uploadfiles', formData, config).then((response) => {
       if (response.data.success) {
+        console.log(response.data);
       } else {
         alert('비디오 업로드를 실패했습니다.');
       }
     });
   };
+
+  const { getRootProps, getInputProps } = useDropzone({ onDrop });
 
   return (
     <Container>
@@ -60,14 +63,10 @@ function VideoUploadPage() {
         <Title>Upload Video</Title>
         <div>
           {/* drop zone */}
-          <Dropzone onDrop={onDrop} multiple={false} maxSize={10000000}>
-            {({ getRootProps, getInputProps }) => (
-              <DropzoneContainer {...getRootProps()}>
-                <input {...getInputProps()} />
-                <AiOutlinePlus className="icon" />
-              </DropzoneContainer>
-            )}
-          </Dropzone>
+          <DropzoneContainer {...getRootProps()}>
+            <input {...getInputProps()} />
+            <AiOutlinePlus className="icon" />
+          </DropzoneContainer>
 
           {/* thumbnail */}
           <div>

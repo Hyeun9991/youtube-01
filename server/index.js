@@ -18,6 +18,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 app.use('/api/users', require('./routes/users'));
+app.use('/api/video', require('./routes/video'));
 
 // 프로덕션 중인 경우 정적 애셋 제공
 if (process.env.NODE_ENV === 'production') {
