@@ -1,34 +1,22 @@
 import React from 'react';
-import { Link, NavLink } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import LeftMenu from './Sections/LeftMenu';
+import RightMenu from './Sections/RightMenu';
 
 function Navbar() {
   return (
     <Header>
       <Container>
-        <Logo>
-          <Link to="/">eunhye</Link>
-        </Logo>
-        <Menu>
-          <li>
-            <NavLink
-              className={({ isActive }) => (isActive ? 'active' : '')}
-              to="/login"
-            >
-              Sign In
-            </NavLink>
-          </li>
-          <li>
-            <NavLink
-              className={({ isActive, isPending }) =>
-                isPending ? 'pending' : isActive ? 'active' : ''
-              }
-              to="/register"
-            >
-              Sign Up
-            </NavLink>
-          </li>
-        </Menu>
+        <LeftContainer>
+          <Logo>
+            <Link to="/">eunhye</Link>
+          </Logo>
+          <LeftMenu />
+        </LeftContainer>
+        <div>
+          <RightMenu />
+        </div>
       </Container>
     </Header>
   );
@@ -53,6 +41,11 @@ const Container = styled.div`
   justify-content: space-between;
   margin: 0 auto;
 `;
+const LeftContainer = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 2.5rem;
+`;
 const Logo = styled.h1`
   display: flex;
   align-items: center;
@@ -63,31 +56,6 @@ const Logo = styled.h1`
     text-transform: uppercase;
     font-size: 14px;
     font-weight: 700;
-  }
-`;
-const Menu = styled.ul`
-  display: flex;
-  gap: 2rem;
-
-  li {
-    list-style: none;
-  }
-
-  a {
-    color: #1c1c1e;
-    text-decoration: none;
-    font-size: 14px;
-    opacity: 0.7;
-
-    &:hover {
-      opacity: 1;
-      text-decoration: underline;
-    }
-
-    &.active {
-      opacity: 1;
-      font-weight: 700;
-    }
   }
 `;
 

@@ -118,13 +118,14 @@ const Container = styled.div`
 const Title = styled.h1`
   font-weight: 400;
   font-size: 32px;
+  margin-bottom: 1rem;
 `;
 const RegisterForm = styled.form`
   width: 380px;
   height: auto;
   display: flex;
   justify-content: center;
-  gap: 2rem;
+  gap: 1rem;
 `;
 const InputContainer = styled.div`
   display: flex;
@@ -166,7 +167,7 @@ const SubmitButton = styled.button`
   border-radius: 8px;
   font-weight: 400;
   cursor: pointer;
-  margin-top: 1rem;
+  margin-top: 2rem;
   font-size: 14px;
 `;
 
