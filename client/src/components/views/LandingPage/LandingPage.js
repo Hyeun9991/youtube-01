@@ -6,10 +6,6 @@ import styled from 'styled-components';
 function LandingPage() {
   const navigate = useNavigate();
 
-  useEffect(() => {
-    axios.get('/api/hello').then((res) => console.log(res));
-  }, []);
-
   const onClickHandler = () => {
     axios.get('/api/users/logout').then((response) => {
       if (response.data.success) {
