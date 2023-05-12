@@ -75,7 +75,7 @@ function VideoUploadPage() {
             alert('썸네일 생성에 실패했습니다.');
           }
         });
-      } else {
+      } else {  
         alert('비디오 업로드를 실패했습니다.');
       }
     });
@@ -189,7 +189,7 @@ const Container = styled.div`
   height: 100vh;
   display: flex;
   flex-direction: column;
-  margin: 10% auto 0;
+  margin: 7% auto 0;
 `;
 const Title = styled.h1`
   font-weight: 700;

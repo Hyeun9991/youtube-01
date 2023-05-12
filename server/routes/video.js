@@ -48,6 +48,17 @@ router.post('/uploadfiles', (req, res) => {
   });
 });
 
+// 비디오를 DB에서 가져와서 client에 보냄
+router.get('/getVideo', async (req, res) => {
+  try {
+    // Video collection안에 모든 video를 가져옴
+    const videos = await Video.find().populate('writer').exec();
+    res.status(200).json({ success: true, videos });
+  } catch (err) {
+    res.status(400).send(err);
+  }
+});
+
 // 비디오 정보들을 mongoDB에 저장
 router.post('/uploadVideo', async (req, res) => {
   const video = new Video(req.body);
