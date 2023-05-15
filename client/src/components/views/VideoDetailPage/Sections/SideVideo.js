@@ -20,8 +20,8 @@ function SideVideo() {
     const seconds = Math.floor(video.duration - minutes * 60);
 
     return (
-      <Container key={video._id}>
-        <LeftSection>
+      <Container key={video._id} className='side-card'>
+        <LeftSection className='side-left-section'>
           <a href="">
             <Thumbnail
               src={`http://localhost:8080/${video.thumbnail}`}

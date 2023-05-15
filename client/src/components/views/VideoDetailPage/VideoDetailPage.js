@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import SideVideo from './Sections/SideVideo';
+import Subscribe from './Sections/Subscribe';
 
 function VideoDetailPage() {
   const videoId = useParams().videoId; // url에서 video id가져오기
@@ -26,7 +27,7 @@ function VideoDetailPage() {
   if (VideoDetail && VideoDetail.writer) {
     return (
       <Container>
-        <MainSection>
+        <MainSection className="main-section sections">
           <VideoScreen
             src={`http://localhost:8080/${VideoDetail.filePath}`}
             controls
@@ -38,13 +39,16 @@ function VideoDetailPage() {
             <UserImage src={VideoDetail.writer.image} alt="작성자 이미지" />
             <div>
               <UserName>{VideoDetail.writer.name}</UserName>
-              <VideoDescription>{VideoDetail.description}</VideoDescription>
+              <SubscribeNumber>구독자 0명</SubscribeNumber>
             </div>
+            <Subscribe userTo={VideoDetail.writer._id} />
           </UserInfo>
+
+          <VideoDescription>{VideoDetail.description}</VideoDescription>
 
           {/* Comments */}
         </MainSection>
-        <SideSection>
+        <SideSection className="side-section sections">
           <SideVideo />
         </SideSection>
       </Container>
@@ -59,6 +63,22 @@ const Container = styled.div`
   min-height: 100vh;
   display: flex;
   gap: 1.4rem;
+
+  @media (min-width: 481px) and (max-width: 1024px) {
+    flex-direction: column;
+    gap: 3rem;
+
+    .sections {
+      width: 100%;
+
+      .side-card {
+        .side-left-section {
+          width: auto;
+          height: 100%;
+        }
+      }
+    }
+  }
 `;
 const MainSection = styled.div`
   width: 70%;
@@ -81,13 +101,22 @@ const UserInfo = styled.div`
   align-items: center;
   margin-top: 0.5rem;
 `;
+const VideoDescription = styled.div`
+  background-color: #f2f2f2;
+  padding: 0.75rem;
+  display: flex;
+  align-items: center;
+  margin-top: 0.5rem;
+  border-radius: 0.75rem;
+  margin-top: 1rem;
+`;
 const UserName = styled.p`
   font-size: 16px;
   font-weight: 700;
 `;
-const VideoDescription = styled.p`
-  opacity: 0.5;
-  font-size: 14px;
+const SubscribeNumber = styled.p`
+  opacity: 0.7;
+  font-size: 12px;
 `;
 const UserImage = styled.img`
   width: 40px;

@@ -27,7 +27,7 @@ function Footer() {
 }
 
 const FooterWrapper = styled.div`
-  background-color: #1c1c1e;
+  background-color: #f2f2f2;
   width: 100%;
   height: 120px;
 `;
@@ -45,7 +45,7 @@ const Logo = styled.h1`
   align-items: center;
 
   a {
-    color: #f2f2f7;
+    color: #000;
     text-decoration: none;
     text-transform: uppercase;
     font-size: 14px;
@@ -61,7 +61,7 @@ const Menu = styled.ul`
   }
 
   a {
-    color: #f2f2f7;
+    color: #000;
     text-decoration: none;
     font-size: 14px;
     opacity: 0.7;
