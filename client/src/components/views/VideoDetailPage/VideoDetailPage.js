@@ -22,8 +22,7 @@ function VideoDetailPage() {
     });
   }, []);
 
-  console.log(VideoDetail.title);
-
+  // VideoDetail.writer.image를 불러오기전에 랜더링되기 떄문에 writer가 있으면 랜더링
   if (VideoDetail && VideoDetail.writer) {
     return (
       <Container>
@@ -41,7 +40,10 @@ function VideoDetailPage() {
               <UserName>{VideoDetail.writer.name}</UserName>
               <SubscribeNumber>구독자 0명</SubscribeNumber>
             </div>
-            <Subscribe userTo={VideoDetail.writer._id} />
+            <Subscribe
+              userTo={VideoDetail.writer._id}
+              userFrom={localStorage.getItem('userId')}
+            />
           </UserInfo>
 
           <VideoDescription>{VideoDetail.description}</VideoDescription>
