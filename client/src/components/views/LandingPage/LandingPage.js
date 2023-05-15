@@ -25,24 +25,20 @@ function LandingPage() {
       <VideoCard key={i}>
         <ThumbnailContainer>
           <a href={`/video/${video._id}`}>
-            <div>
-              <ThumbnailImage
-                src={`http://localhost:8080/${video.thumbnail}`}
-                alt="썸네일 사진"
-              />
-
-              <Duration>
-                <span>
-                  {minutes} : {seconds}
-                </span>
-              </Duration>
-            </div>
+            <ThumbnailImage
+              src={`http://localhost:8080/${video.thumbnail}`}
+              alt="썸네일 사진"
+            />
+            <Duration>
+              <span>
+                {minutes} : {seconds}
+              </span>
+            </Duration>
           </a>
         </ThumbnailContainer>
 
         <VideoInfoContainer>
           <ProfileImage src={video.writer.image} alt="프로필 사진" />
-
           <VideoInfo>
             <p>{video.title}</p>
             <span>{video.writer.name}</span>

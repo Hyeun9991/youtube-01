@@ -2,32 +2,51 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
+import ReactPlayer from 'react-player/lazy';
 
 function VideoDetailPage() {
-  // const videoId = useParams().videoId; // url에서 가져온 video id
-  // const variable = { videoId: videoId };
+  const videoId = useParams().videoId; // url에서 video id가져오기
+  const videoVariable = { videoId: videoId };
 
-  /**
-   * [실패]
-   * server에서 보낸 videoDetail이 텅 빈채로 전달됨
-   * writer, filPath도 못 가져오고 있는 상황
-   */
+  const [VideoDetail, setVideoDetail] = useState([]);
 
-  return (
-    <Container>
-      <div>
-        <video
-          // src={`http://localhost:8080/${VideoDetail.filePath}`}
-          controls
+  useEffect(() => {
+    // id를 보내서 해당 비디오 정보 가져오기
+    axios.post('/api/video/getVideoDetail', videoVariable).then((response) => {
+      if (response.data.success) {
+        setVideoDetail(response.data.videoDetail);
+      } else {
+        alert('비디로 정보를 가져오는데 실패했습니다.');
+      }
+    });
+  }, []);
+
+  if (VideoDetail && VideoDetail.writer) {
+    return (
+      <Container>
+        <ReactPlayer
+          style={{ width: '100%' }}
+          url={`http://localhost:8080/${VideoDetail.filePath}`}
+          playing={true} // 자동 재생 on
+          controls={true} // 플레이어 컨트롤 노출 여부
+          light={false} // 플레이어 모드
+          pip={true} // pip 모드 설정 여부
         />
-      </div>
 
-      <div>
-        {/* <p>{VideoDetail.writer}</p>
-        <p>{VideoDetail.description}</p> */}
-      </div>
-    </Container>
-  );
+        <UserInfo>
+          <UserImage src={VideoDetail.writer.image} alt="작성자 이미지" />
+          <div>
+            <p>{VideoDetail.writer.name}</p>
+            <p>{VideoDetail.description}</p>
+          </div>
+        </UserInfo>
+
+        {/* Comments */}
+      </Container>
+    );
+  } else {
+    return <div>loading...</div>;
+  }
 }
 
 const Container = styled.div`
@@ -36,8 +55,17 @@ const Container = styled.div`
   max-width: 1080px;
   margin: 7% auto 0;
 `;
-const VideoTag = styled.video`
-  width: 100%;
+const UserInfo = styled.div`
+  display: flex;
+  align-items: center;
+  margin-top: 1rem;
+`;
+const UserImage = styled.img`
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  margin-right: 1rem;
+  background-color: #000;
 `;
 
 export default VideoDetailPage;

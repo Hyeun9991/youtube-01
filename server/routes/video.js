@@ -1,7 +1,6 @@
 const express = require('express');
 const router = express.Router();
 const { Video } = require('../models/Video');
-const { auth } = require('../middleware/auth');
 const multer = require('multer');
 var ffmpeg = require('fluent-ffmpeg');
 
@@ -48,8 +47,16 @@ router.post('/uploadfiles', (req, res) => {
   });
 });
 
-router.post('/getVideoDetail', (req, res) => {
-  // 실패로 인하여 다시 하기
+// id를 이용해서 비디오 정보를 찾은 다음 client에 보냄
+router.post('/getVideoDetail', async (req, res) => {
+  try {
+    // 클라이언트에서 보낸 postId를 이용해서 비디오를 찾음
+    // populate: 유저의 모든 정보 (이미지, 이름, 다른정보까지 다 가져옴)
+    const videoDetail = await Video.findOne({ _id: req.body.videoId }).populate('writer');
+    return res.status(200).json({ success: true, videoDetail });
+  } catch (err) {
+    return res.status(400).send(err);
+  }
 });
 
 // 비디오를 DB에서 가져와서 client에 보냄
