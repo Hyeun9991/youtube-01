@@ -3,10 +3,11 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import ReactPlayer from 'react-player/lazy';
+import SideVideo from './Sections/SideVideo';
 
 function VideoDetailPage() {
   const videoId = useParams().videoId; // url에서 video id가져오기
-  const videoVariable = { videoId: videoId };
+  const videoVariable = { videoId: videoId }; // json 형식으로 보내야 서버에서 알맞게 받을 수 있음
 
   const [VideoDetail, setVideoDetail] = useState([]);
 
@@ -24,24 +25,25 @@ function VideoDetailPage() {
   if (VideoDetail && VideoDetail.writer) {
     return (
       <Container>
-        <ReactPlayer
-          style={{ width: '100%' }}
-          url={`http://localhost:8080/${VideoDetail.filePath}`}
-          playing={true} // 자동 재생 on
-          controls={true} // 플레이어 컨트롤 노출 여부
-          light={false} // 플레이어 모드
-          pip={true} // pip 모드 설정 여부
-        />
+        <MainSection>
+          <VideoScreen
+            src={`http://localhost:8080/${VideoDetail.filePath}`}
+            controls
+          />
 
-        <UserInfo>
-          <UserImage src={VideoDetail.writer.image} alt="작성자 이미지" />
-          <div>
-            <p>{VideoDetail.writer.name}</p>
-            <p>{VideoDetail.description}</p>
-          </div>
-        </UserInfo>
+          <UserInfo>
+            <UserImage src={VideoDetail.writer.image} alt="작성자 이미지" />
+            <div>
+              <p>{VideoDetail.writer.name}</p>
+              <p>{VideoDetail.description}</p>
+            </div>
+          </UserInfo>
 
-        {/* Comments */}
+          {/* Comments */}
+        </MainSection>
+        <SideSection>
+          <SideVideo />
+        </SideSection>
       </Container>
     );
   } else {
@@ -53,8 +55,21 @@ const Container = styled.div`
   width: 100%;
   min-height: 100vh;
   max-width: 1080px;
-  margin: 7% auto 0;
+  margin: 70px auto 0;
+  display: flex;
+  gap: 1rem;
 `;
+const MainSection = styled.div`
+  background-color: red;
+  width: 720px;
+`;
+const SideSection = styled.div`
+  background-color: yellow;
+  width: 360px;
+`;
+const VideoScreen = styled.video`
+  width: 100%;
+`
 const UserInfo = styled.div`
   display: flex;
   align-items: center;
