@@ -2,7 +2,6 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
-import ReactPlayer from 'react-player/lazy';
 import SideVideo from './Sections/SideVideo';
 
 function VideoDetailPage() {
@@ -22,6 +21,8 @@ function VideoDetailPage() {
     });
   }, []);
 
+  console.log(VideoDetail.title);
+
   if (VideoDetail && VideoDetail.writer) {
     return (
       <Container>
@@ -31,11 +32,13 @@ function VideoDetailPage() {
             controls
           />
 
+          <VideoTitle>{VideoDetail.title}</VideoTitle>
+
           <UserInfo>
             <UserImage src={VideoDetail.writer.image} alt="작성자 이미지" />
             <div>
-              <p>{VideoDetail.writer.name}</p>
-              <p>{VideoDetail.description}</p>
+              <UserName>{VideoDetail.writer.name}</UserName>
+              <VideoDescription>{VideoDetail.description}</VideoDescription>
             </div>
           </UserInfo>
 
@@ -54,32 +57,43 @@ function VideoDetailPage() {
 const Container = styled.div`
   width: 100%;
   min-height: 100vh;
-  max-width: 1080px;
-  margin: 70px auto 0;
   display: flex;
-  gap: 1rem;
+  gap: 1.4rem;
 `;
 const MainSection = styled.div`
-  background-color: red;
-  width: 720px;
+  width: 70%;
 `;
 const SideSection = styled.div`
-  background-color: yellow;
-  width: 360px;
+  width: 27%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
 `;
 const VideoScreen = styled.video`
   width: 100%;
-`
+`;
+const VideoTitle = styled.h2`
+  font-size: 20px;
+  margin-top: 0.5rem;
+`;
 const UserInfo = styled.div`
   display: flex;
   align-items: center;
-  margin-top: 1rem;
+  margin-top: 0.5rem;
+`;
+const UserName = styled.p`
+  font-size: 16px;
+  font-weight: 700;
+`;
+const VideoDescription = styled.p`
+  opacity: 0.5;
+  font-size: 14px;
 `;
 const UserImage = styled.img`
-  width: 50px;
-  height: 50px;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
-  margin-right: 1rem;
+  margin-right: 0.5rem;
   background-color: #000;
 `;
 

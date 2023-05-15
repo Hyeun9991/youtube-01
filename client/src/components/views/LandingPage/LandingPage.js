@@ -62,10 +62,9 @@ function LandingPage() {
 }
 
 const Container = styled.div`
-  width: 100%;
+  width: 90%;
   min-height: 100vh;
-  max-width: 1080px;
-  margin: 7% auto 0;
+  margin: 0 auto;
 `;
 const Title = styled.h1`
   font-weight: 700;

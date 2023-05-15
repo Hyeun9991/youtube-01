@@ -185,11 +185,8 @@ function VideoUploadPage() {
 
 const Container = styled.div`
   width: 100%;
-  max-width: 1080px;
-  height: 100vh;
   display: flex;
   flex-direction: column;
-  margin: 7% auto 0;
 `;
 const Title = styled.h1`
   font-weight: 700;
