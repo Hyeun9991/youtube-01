@@ -1,10 +1,11 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Auth from './hoc/auth';
+import Layout from './components/Layout/Layout';
 import LandingPage from './components/views/LandingPage/LandingPage';
 import LoginPage from './components/views/LoginPage/LoginPage';
 import RegisterPage from './components/views/RegisterPage/RegisterPage';
-import Layout from './components/Layout/Layout';
 import VideoUploadPage from './components/views/VideoUploadPage/VideoUploadPage';
-import Auth from './hoc/auth';
+import VideoDetailPage from './components/views/VideoDetailPage/VideoDetailPage';
 
 function App() {
   /**
@@ -16,6 +17,7 @@ function App() {
   const AuthenticLoginPage = Auth(LoginPage, false);
   const AuthenticRegisterPage = Auth(RegisterPage, false);
   const AuthenticVideoUploadPage = Auth(VideoUploadPage, true);
+  const AuthenticVideoDetailPage = Auth(VideoDetailPage, null);
 
   return (
     <Router>
@@ -25,6 +27,10 @@ function App() {
           <Route path="/login" element={<AuthenticLoginPage />} />
           <Route path="/register" element={<AuthenticRegisterPage />} />
           <Route path="/video/upload" element={<AuthenticVideoUploadPage />} />
+          <Route
+            path="/video/:videoId"
+            element={<AuthenticVideoDetailPage />}
+          />
         </Routes>
       </Layout>
     </Router>

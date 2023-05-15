@@ -48,6 +48,10 @@ router.post('/uploadfiles', (req, res) => {
   });
 });
 
+router.post('/getVideoDetail', (req, res) => {
+  // 실패로 인하여 다시 하기
+});
+
 // 비디오를 DB에서 가져와서 client에 보냄
 router.get('/getVideo', async (req, res) => {
   try {

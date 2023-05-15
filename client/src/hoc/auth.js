@@ -22,7 +22,7 @@ export default function Auth(SpecificComponent, option, adminRoute = null) {
       // auth 액션함수가 반환하는 값 (=reducer에게 전달될 값)
       dispatch(auth()).then((response) => {
         // 백엔드에서 처리해서 가져온 정보 (isAuth check)
-        console.log('auth?', response);
+        // console.log('auth?', response);
 
         // 로그인 하지 않은 상태
         if (!response.payload.isAuth) {

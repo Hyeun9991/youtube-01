@@ -9,7 +9,7 @@ function LandingPage() {
   useEffect(() => {
     axios.get('/api/video/getVideo').then((response) => {
       if (response.data.success) {
-        console.log(response.data);
+        // console.log(response.data);
         setVideo(response.data.videos);
       } else {
         alert('비디오 가져오기를 실패 했습니다.');
@@ -24,7 +24,7 @@ function LandingPage() {
     return (
       <VideoCard key={i}>
         <ThumbnailContainer>
-          <a href={`/video/post/${video._id}`}>
+          <a href={`/video/${video._id}`}>
             <div>
               <ThumbnailImage
                 src={`http://localhost:8080/${video.thumbnail}`}
