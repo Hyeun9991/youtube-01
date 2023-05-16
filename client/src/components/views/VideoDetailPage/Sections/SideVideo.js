@@ -22,7 +22,7 @@ function SideVideo() {
     return (
       <Container key={video._id} className='side-card'>
         <LeftSection className='side-left-section'>
-          <a href="">
+          <a href={`/video/${video._id}`}>
             <Thumbnail
               src={`http://localhost:8080/${video.thumbnail}`}
               alt="thumbnail"

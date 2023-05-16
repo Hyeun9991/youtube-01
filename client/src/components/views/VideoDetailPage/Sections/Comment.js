@@ -2,10 +2,10 @@ import axios from 'axios';
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { useSelector } from 'react-redux';
+import SingleComment from './SingleComment';
 
 function Comment(props) {
   const user = useSelector((state) => state.user); // redux store에서 user.userData 가져오기
-  const videoId = props.videoId;
 
   const [commentValue, setCommentValue] = useState('');
 
@@ -19,7 +19,7 @@ function Comment(props) {
     const commentVariables = {
       content: commentValue,
       writer: user.userData._id,
-      videoId: videoId,
+      videoId: props.videoId,
     };
 
     // 댓글 작성자, 댓글 내용 등을 DB에 넣기
@@ -27,18 +27,19 @@ function Comment(props) {
       .post('/api/comment/saveComment', commentVariables)
       .then((response) => {
         if (response.data.success) {
-          console.log(response.data.newCommentData);
+          props.refreshFunction(response.data.newCommentData);
+          setCommentValue('');
         } else {
           alert('댓글작성에 실패했습니다.');
         }
       });
   };
 
+  console.log(props.commentLists);
+
   return (
     <Container>
-      <CommentTitle>댓글 0개</CommentTitle>
-
-      {/* Comment Lists */}
+      <CommentTitle>댓글 {props.commentLists.length}개</CommentTitle>
 
       {/* Root Comment Form */}
       <RootCommentForm action="" onSubmit={onSubmit}>
@@ -58,6 +59,24 @@ function Comment(props) {
           <SubmitButton onClick={onSubmit}>댓글</SubmitButton>
         </MainComment>
       </RootCommentForm>
+
+      {/* Comment Lists, 내림차순으로 화면에 출력 */}
+      {props.commentLists &&
+        props.commentLists
+          .slice()
+          .reverse()
+          .map(
+            (comment) =>
+              // responseTo가 없는 댓글만 화면에 출력
+              !comment.responseTo && (
+                <SingleComment
+                  key={comment._id}
+                  comment={comment}
+                  videoId={props.videoId}
+                  refreshFunction={props.refreshFunction}
+                />
+              )
+          )}
     </Container>
   );
 }
@@ -91,6 +110,7 @@ const RootCommentForm = styled.form`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  margin-bottom: 1rem;
 `;
 const CommentTextarea = styled.textarea`
   height: 25px;

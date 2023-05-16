@@ -11,9 +11,10 @@ function VideoDetailPage() {
   const videoVariable = { videoId: videoId }; // json 형식으로 보내야 서버에서 알맞게 받을 수 있음
 
   const [VideoDetail, setVideoDetail] = useState([]);
+  const [Comments, setComments] = useState([]);
 
   useEffect(() => {
-    // id를 보내서 해당 비디오 정보 가져오기
+    // id를 보내서 해당 video data 가져오기
     axios.post('/api/video/getVideoDetail', videoVariable).then((response) => {
       if (response.data.success) {
         setVideoDetail(response.data.videoDetail);
@@ -21,7 +22,21 @@ function VideoDetailPage() {
         alert('비디로 정보를 가져오는데 실패했습니다.');
       }
     });
+
+    // id를 보내서 해당 comment data 가져오기
+    axios.post('/api/comment/getComments', videoVariable).then((response) => {
+      if (response.data.success) {
+        setComments(response.data.comments);
+      } else {
+        alert('코멘트 정보를 가져오는데 실패했습니다.');
+      }
+    });
   }, []);
+
+  // Comment Component 에서 전달받은 newCommentData로 Comments state update
+  const refreshFunction = (newCommentData) => {
+    setComments(Comments.concat(newCommentData));
+  };
 
   // VideoDetail.writer.image를 불러오기전에 랜더링되기 떄문에 writer가 있으면 랜더링
   if (VideoDetail && VideoDetail.writer) {
@@ -42,6 +57,7 @@ function VideoDetailPage() {
             src={`http://localhost:8080/${VideoDetail.filePath}`}
             controls
           />
+
           <VideoTitle>{VideoDetail.title}</VideoTitle>
           <UserInfo>
             <UserImage src={VideoDetail.writer.image} alt="작성자 이미지" />
@@ -59,7 +75,11 @@ function VideoDetailPage() {
           </SideSection>
 
           {/* Comment Section */}
-          <Comment videoId={videoId} />
+          <Comment
+            commentLists={Comments}
+            videoId={videoId}
+            refreshFunction={refreshFunction}
+          />
         </MainSection>
         <SideSection className="side-section sections">
           <SideVideo />
