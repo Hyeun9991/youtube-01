@@ -24,6 +24,16 @@ function VideoDetailPage() {
 
   // VideoDetail.writer.image를 불러오기전에 랜더링되기 떄문에 writer가 있으면 랜더링
   if (VideoDetail && VideoDetail.writer) {
+
+    // 유저의 아이디와 비디오 작성자의 아이디가 다른 경우에만 구독 버튼 보이게 하는 함수
+    const subscribeButton = VideoDetail.writer._id !==
+      localStorage.getItem('userId') && (
+      <Subscribe
+        userTo={VideoDetail.writer._id}
+        userFrom={localStorage.getItem('userId')}
+      />
+    );
+
     return (
       <Container>
         <MainSection className="main-section sections">
@@ -40,10 +50,7 @@ function VideoDetailPage() {
               <UserName>{VideoDetail.writer.name}</UserName>
               <SubscribeNumber>구독자 0명</SubscribeNumber>
             </div>
-            <Subscribe
-              userTo={VideoDetail.writer._id}
-              userFrom={localStorage.getItem('userId')}
-            />
+            {subscribeButton}
           </UserInfo>
 
           <VideoDescription>{VideoDetail.description}</VideoDescription>
@@ -101,7 +108,7 @@ const VideoTitle = styled.h2`
 const UserInfo = styled.div`
   display: flex;
   align-items: center;
-  margin-top: 0.5rem;
+  margin-top: 1rem;
 `;
 const VideoDescription = styled.div`
   background-color: #f2f2f2;
