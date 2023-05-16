@@ -37,13 +37,12 @@ function VideoDetailPage() {
     return (
       <Container>
         <MainSection className="main-section sections">
+          {/* Video Section */}
           <VideoScreen
             src={`http://localhost:8080/${VideoDetail.filePath}`}
             controls
           />
-
           <VideoTitle>{VideoDetail.title}</VideoTitle>
-
           <UserInfo>
             <UserImage src={VideoDetail.writer.image} alt="작성자 이미지" />
             <div>
@@ -52,15 +51,15 @@ function VideoDetailPage() {
             </div>
             {subscribeButton}
           </UserInfo>
-
           <VideoDescription>{VideoDetail.description}</VideoDescription>
 
+          {/* Side Video Section */}
           <SideSection className="main-side-section sections">
             <SideVideo />
           </SideSection>
 
-          {/* Comments */}
-          <Comment />
+          {/* Comment Section */}
+          <Comment videoId={videoId} />
         </MainSection>
         <SideSection className="side-section sections">
           <SideVideo />
