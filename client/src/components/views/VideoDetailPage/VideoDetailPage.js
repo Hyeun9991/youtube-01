@@ -4,6 +4,7 @@ import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import SideVideo from './Sections/SideVideo';
 import Subscribe from './Sections/Subscribe';
+import Comment from './Sections/Comment';
 
 function VideoDetailPage() {
   const videoId = useParams().videoId; // url에서 video id가져오기
@@ -24,7 +25,6 @@ function VideoDetailPage() {
 
   // VideoDetail.writer.image를 불러오기전에 랜더링되기 떄문에 writer가 있으면 랜더링
   if (VideoDetail && VideoDetail.writer) {
-
     // 유저의 아이디와 비디오 작성자의 아이디가 다른 경우에만 구독 버튼 보이게 하는 함수
     const subscribeButton = VideoDetail.writer._id !==
       localStorage.getItem('userId') && (
@@ -55,7 +55,12 @@ function VideoDetailPage() {
 
           <VideoDescription>{VideoDetail.description}</VideoDescription>
 
+          <SideSection className="main-side-section sections">
+            <SideVideo />
+          </SideSection>
+
           {/* Comments */}
+          <Comment />
         </MainSection>
         <SideSection className="side-section sections">
           <SideVideo />
@@ -79,20 +84,35 @@ const Container = styled.div`
 
     .sections {
       width: 100%;
+    }
 
-      .side-card {
+    .main-section {
+      .main-side-section {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        margin-bottom: 2rem;
+
         .side-left-section {
           width: auto;
           height: 100%;
         }
       }
     }
+
+    .side-section {
+      display: none;
+    }
   }
 `;
-const MainSection = styled.div`
+const MainSection = styled.section`
   width: 70%;
+
+  .main-side-section {
+    display: none;
+  }
 `;
-const SideSection = styled.div`
+const SideSection = styled.section`
   width: 27%;
   display: flex;
   flex-direction: column;
@@ -118,6 +138,7 @@ const VideoDescription = styled.div`
   margin-top: 0.5rem;
   border-radius: 0.75rem;
   margin-top: 1rem;
+  margin-bottom: 2rem;
 `;
 const UserName = styled.p`
   font-size: 16px;
