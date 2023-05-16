@@ -3,18 +3,24 @@ import styled from 'styled-components';
 import axios from 'axios';
 const moment = require('moment');
 
-function LandingPage() {
+function SubscriptionPage() {
   const [Video, setVideo] = useState([]);
 
   useEffect(() => {
-    axios.get('/api/video/getVideo').then((response) => {
-      if (response.data.success) {
-        setVideo(response.data.videos);
-        console.log(response.data)
-      } else {
-        alert('비디오 가져오기를 실패 했습니다.');
-      }
-    });
+    const subscriptionVariable = {
+      userFrom: localStorage.getItem('userId'),
+    };
+
+    axios
+      .post('/api/video/getSubscriptionVideos', subscriptionVariable)
+      .then((response) => {
+        if (response.data.success) {
+          setVideo(response.data.videos);
+          console.log(response.data)
+        } else {
+          alert('비디오 가져오기를 실패 했습니다.');
+        }
+      });
   }, []); // DOM이 Update될 때 한 번만 실행
 
   const renderCards = Video.map((video, i) => {
@@ -130,4 +136,4 @@ const VideoCard = styled.div`
   margin-bottom: 3rem;
 `;
 
-export default LandingPage;
+export default SubscriptionPage;

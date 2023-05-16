@@ -26,7 +26,7 @@ router.post('/subscribed', async (req, res) => {
   try {
     const subscribed = await Subscriber.find({
       userTo: req.body.userTo,
-      userForm: req.body.userFrom,
+      userFrom: req.body.userFrom,
     }).exec();
 
     let result = false;

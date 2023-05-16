@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { Video } = require('../models/Video');
+const { Subscriber } = require('../models/Subscriber');
 const multer = require('multer');
 var ffmpeg = require('fluent-ffmpeg');
 
@@ -47,12 +48,40 @@ router.post('/uploadfiles', (req, res) => {
   });
 });
 
+router.post('/getSubscriptionVideos', async (req, res) => {
+  try {
+    // 자신의 아이디를 가지고 구독하는 사람들을 찾는다.
+    const subscriberInfo = await Subscriber.find({
+      userFrom: req.body.userFrom,
+    }).exec();
+
+    let subscribedUser = [];
+
+    // subscribedUser 리스트에 자신이 구독한 사람들의 아이디를 담음.
+    subscriberInfo.map((subscriber) => {
+      subscribedUser.push(subscriber.userTo);
+    });
+
+    // 찾은 사람들의 비디오를 가지고 온다.
+    // $in: subscribedUser에 들어있는 모든 사람들의 아이디를 가지고 writer를 찾을 수 있음.
+    const videos = await Video.find({ writer: { $in: subscribedUser } })
+      .populate('writer')
+      .exec();
+
+    return res.status(200).json({ success: true, videos });
+  } catch (err) {
+    return res.status(400).send(err);
+  }
+});
+
 // id를 이용해서 비디오 정보를 찾은 다음 client에 보냄
 router.post('/getVideoDetail', async (req, res) => {
   try {
     // 클라이언트에서 보낸 postId를 이용해서 비디오를 찾음
     // populate: 유저의 모든 정보 (이미지, 이름, 다른정보까지 다 가져옴)
-    const videoDetail = await Video.findOne({ _id: req.body.videoId }).populate('writer');
+    const videoDetail = await Video.findOne({ _id: req.body.videoId }).populate(
+      'writer'
+    );
     return res.status(200).json({ success: true, videoDetail });
   } catch (err) {
     return res.status(400).send(err);
@@ -66,7 +95,7 @@ router.get('/getVideo', async (req, res) => {
     const videos = await Video.find().populate('writer').exec();
     res.status(200).json({ success: true, videos });
   } catch (err) {
-    res.status(400).send(err);
+    return res.status(400).send(err);
   }
 });
 

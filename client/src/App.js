@@ -6,6 +6,7 @@ import LoginPage from './components/views/LoginPage/LoginPage';
 import RegisterPage from './components/views/RegisterPage/RegisterPage';
 import VideoUploadPage from './components/views/VideoUploadPage/VideoUploadPage';
 import VideoDetailPage from './components/views/VideoDetailPage/VideoDetailPage';
+import SubscriptionPage from './components/views/SubscriptionPage/SubscriptionPage';
 
 function App() {
   /**
@@ -18,6 +19,7 @@ function App() {
   const AuthenticRegisterPage = Auth(RegisterPage, false);
   const AuthenticVideoUploadPage = Auth(VideoUploadPage, true);
   const AuthenticVideoDetailPage = Auth(VideoDetailPage, null);
+  const AuthenticSubscriptionPage = Auth(SubscriptionPage, null);
 
   return (
     <Router>
@@ -31,6 +33,7 @@ function App() {
             path="/video/:videoId"
             element={<AuthenticVideoDetailPage />}
           />
+          <Route path="/subscription" element={<AuthenticSubscriptionPage />} />
         </Routes>
       </Layout>
     </Router>
