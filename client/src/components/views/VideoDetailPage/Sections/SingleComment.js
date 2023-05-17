@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import axios from 'axios';
 import { useSelector } from 'react-redux';
 
-function SingleComment(props) {
+function SingleComment({ comment, videoId, refreshFunction }) {
   const user = useSelector((state) => state.user); // redux store에서 user.userData 가져오기
 
   const [OpenReply, setOpenReply] = useState(false);
@@ -14,7 +14,8 @@ function SingleComment(props) {
   };
 
   const onHandleChange = (e) => {
-    setCommentValue(e.currentTarget.CommentValue);
+    // CommentValue => value (mongoDB에 content가 저장안되는 오류 해결)
+    setCommentValue(e.currentTarget.value);
   };
 
   const onSubmit = (e) => {
@@ -23,8 +24,8 @@ function SingleComment(props) {
     const commentVariables = {
       content: CommentValue,
       writer: user.userData._id,
-      videoId: props.videoId,
-      responseTo: props.comment._id,
+      videoId: videoId,
+      responseTo: comment._id,
     };
 
     // 댓글 작성자, 댓글 내용 등을 DB에 넣기
@@ -32,8 +33,9 @@ function SingleComment(props) {
       .post('/api/comment/saveComment', commentVariables)
       .then((response) => {
         if (response.data.success) {
-          props.refreshFunction(response.data.newCommentData);
+          refreshFunction(response.data.newCommentData);
           setCommentValue('');
+          setOpenReply(false);
         } else {
           alert('댓글작성에 실패했습니다.');
         }
@@ -47,57 +49,52 @@ function SingleComment(props) {
   ];
 
   return (
-    <Container>
-      <ReplyContainer>
-        <UserImageContainer
-          src={props.comment.writer.image}
-          alt="작성자 이미지"
-        />
-        <ReplyContents>
-          <UserName>{props.comment.writer.name}</UserName>
-          <CommentContent>{props.comment.content}</CommentContent>
-          <Actions>{actions}</Actions>
-          {OpenReply && (
-            <SingleCommentForm action="" onSubmit={onSubmit}>
-              <MainComment>
-                <SmUserImageContainer>
-                  <img src="" />
-                </SmUserImageContainer>
-                <CommentTextarea
-                  name=""
-                  id=""
-                  cols="30"
-                  rows="1"
-                  placeholder="댓글 추가..."
-                  value={CommentValue}
-                  onChange={onHandleChange}
-                />
-                <SubmitButton onClick={onSubmit}>댓글</SubmitButton>
-              </MainComment>
-            </SingleCommentForm>
-          )}
-        </ReplyContents>
-      </ReplyContainer>
-    </Container>
+    <SingleCommentContainer>
+      <UserImageContainer>
+        {comment.writer.image && (
+          <img src={comment.writer.image} alt="작성자 이미지" />
+        )}
+      </UserImageContainer>
+      <CommentContainer>
+        <UserName>{comment.writer.name}</UserName>
+        <ContentText>{comment.content}</ContentText>
+        <Actions>{actions}</Actions>
+        {OpenReply && (
+          <ReplyCommentForm action="" onSubmit={onSubmit}>
+            <MainComment>
+              <SmUserImageContainer>
+                {comment.writer.image && <img src="" />}
+              </SmUserImageContainer>
+              <CommentTextarea
+                name=""
+                id=""
+                cols="30"
+                rows="1"
+                placeholder="댓글 추가..."
+                value={CommentValue}
+                onChange={onHandleChange}
+              />
+              <SubmitButton onClick={onSubmit}>댓글</SubmitButton>
+            </MainComment>
+          </ReplyCommentForm>
+        )}
+      </CommentContainer>
+    </SingleCommentContainer>
   );
 }
 
-const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-`;
-const ReplyContainer = styled.div`
+const SingleCommentContainer = styled.div`
   display: flex;
   gap: 1rem;
   margin-top: 1.5rem;
 `;
-const ReplyContents = styled.div`
+const CommentContainer = styled.div`
   width: 90%;
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
 `;
-const SingleCommentForm = styled.form`
+const ReplyCommentForm = styled.form`
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -161,7 +158,7 @@ const SubmitButton = styled.button`
 const UserName = styled.p`
   font-size: 13px;
 `;
-const CommentContent = styled.p`
+const ContentText = styled.p`
   font-size: 14px;
 `;
 const Actions = styled.div`

@@ -3,8 +3,9 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 import SingleComment from './SingleComment';
+import ReplyComment from './ReplyComment';
 
-function Comment(props) {
+function Comment({ commentLists, videoId, refreshFunction }) {
   const user = useSelector((state) => state.user); // redux store에서 user.userData 가져오기
 
   const [commentValue, setCommentValue] = useState('');
@@ -19,7 +20,7 @@ function Comment(props) {
     const commentVariables = {
       content: commentValue,
       writer: user.userData._id,
-      videoId: props.videoId,
+      videoId: videoId,
     };
 
     // 댓글 작성자, 댓글 내용 등을 DB에 넣기
@@ -27,7 +28,7 @@ function Comment(props) {
       .post('/api/comment/saveComment', commentVariables)
       .then((response) => {
         if (response.data.success) {
-          props.refreshFunction(response.data.newCommentData);
+          refreshFunction(response.data.newCommentData);
           setCommentValue('');
         } else {
           alert('댓글작성에 실패했습니다.');
@@ -35,11 +36,9 @@ function Comment(props) {
       });
   };
 
-  console.log(props.commentLists);
-
   return (
     <Container>
-      <CommentTitle>댓글 {props.commentLists.length}개</CommentTitle>
+      <CommentTitle>댓글 {commentLists.length}개</CommentTitle>
 
       {/* Root Comment Form */}
       <RootCommentForm action="" onSubmit={onSubmit}>
@@ -61,20 +60,27 @@ function Comment(props) {
       </RootCommentForm>
 
       {/* Comment Lists, 내림차순으로 화면에 출력 */}
-      {props.commentLists &&
-        props.commentLists
+      {commentLists &&
+        commentLists
           .slice()
           .reverse()
           .map(
             (comment) =>
               // responseTo가 없는 댓글만 화면에 출력
               !comment.responseTo && (
-                <SingleComment
-                  key={comment._id}
-                  comment={comment}
-                  videoId={props.videoId}
-                  refreshFunction={props.refreshFunction}
-                />
+                <React.Fragment key={comment._id}>
+                  <SingleComment
+                    comment={comment}
+                    videoId={videoId}
+                    refreshFunction={refreshFunction}
+                  />
+                  <ReplyComment
+                    videoId={videoId}
+                    parentCommentId={comment._id}
+                    commentLists={commentLists}
+                    refreshFunction={refreshFunction}
+                  />
+                </React.Fragment>
               )
           )}
     </Container>
@@ -88,7 +94,6 @@ const Container = styled.div`
 const CommentTitle = styled.p`
   margin-bottom: 1.5rem;
 `;
-const CommentLists = styled.div``;
 const MainComment = styled.div`
   width: 100%;
   display: flex;

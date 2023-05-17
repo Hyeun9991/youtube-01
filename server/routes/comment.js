@@ -24,6 +24,7 @@ router.post('/saveComment', async (req, res) => {
   }
 });
 
+// 댓글 작성자 데이터를 가져와서 client에 전달
 router.post('/getComments', async (req, res) => {
   try {
     const comments = await Comment.find({ videoId: req.body.videoId })
