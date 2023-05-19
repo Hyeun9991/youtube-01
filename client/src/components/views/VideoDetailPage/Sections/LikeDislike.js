@@ -62,10 +62,70 @@ function LikeDislike({ video, userId, videoId, commentId }) {
     });
   }, []);
 
+  const onLike = () => {
+    // 좋아요가 클릭 안되어있을때
+    if (LikeAction === null) {
+      axios.post('/api/like/upLike', likeVariable).then((response) => {
+        if (response.data.success) {
+          setLikes(Likes + 1);
+          setLikeAction('liked');
+
+          // 클릭이 이미 되어있으면
+          if (DislikeAction !== null) {
+            setDislikeAction(null);
+            setDislikes(Dislikes - 1);
+          }
+        } else {
+          alert('Like를 올리지 못했습니다.');
+        }
+      });
+    } else {
+      // 좋아요가 클릭 되어있을때
+      axios.post('/api/like/unLike', likeVariable).then((response) => {
+        if (response.data.success) {
+          setLikes(Likes - 1);
+          setLikeAction(null);
+        } else {
+          alert('Like를 내리지 못했습니다.');
+        }
+      });
+    }
+  };
+
+  const onDislike = () => {
+    // 싫어요가 클릭 되어있을때
+    if (DislikeAction !== null) {
+      axios.post('/api/like/unDislike', likeVariable).then((response) => {
+        if (response.data.success) {
+          setDislikes(Dislikes - 1);
+          setDislikeAction(null);
+        } else {
+          alert('dislike을 내리지 못했습니다.');
+        }
+      });
+    } else {
+      // 싫어요가 클릭 안되어있을때
+      axios.post('/api/like/upDislike', likeVariable).then((response) => {
+        if (response.data.success) {
+          setDislikes(Dislikes + 1);
+          setDislikeAction('disliked');
+
+          // 클릭이 이미 되어있으면
+          if (LikeAction !== null) {
+            setLikeAction(null);
+            setLikes(Likes - 1);
+          }
+        } else {
+          alert('dislike을 올리지 못했습니다.');
+        }
+      });
+    }
+  };
+
   return (
     <LikeDislikeContainer>
       <LikeSection>
-        <IconContainer>
+        <IconContainer onClick={onLike}>
           {LikeAction === 'liked' ? (
             <AiFillLike className="icon" />
           ) : (
@@ -75,7 +135,7 @@ function LikeDislike({ video, userId, videoId, commentId }) {
         <span>{Likes}</span>
       </LikeSection>
       <DislikeSection>
-        <IconContainer>
+        <IconContainer onClick={onDislike}>
           {DislikeAction === 'disliked' ? (
             <AiFillLike className="icon dislike-icon" />
           ) : (
