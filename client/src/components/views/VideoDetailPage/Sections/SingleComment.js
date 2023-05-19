@@ -45,6 +45,7 @@ function SingleComment({ comment, videoId, refreshFunction }) {
 
   const actions = [
     <LikeDislike
+      key="like-dislike"
       userId={localStorage.getItem('userId')}
       commentId={comment._id}
     />,
