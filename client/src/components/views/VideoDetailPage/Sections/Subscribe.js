@@ -94,12 +94,15 @@ const SubscribeButton = styled.button`
   font-size: 14px;
   font-weight: 500;
   line-height: 18px;
-  margin-left: 1.5rem;
   cursor: pointer;
 
   &.subscribed-color {
     background-color: #f2f2f2;
     color: #000;
+  }
+
+  &:hover {
+    background-color: #e8e6e6;
   }
 `;
 

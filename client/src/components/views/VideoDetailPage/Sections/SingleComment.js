@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
 import { useSelector } from 'react-redux';
+import LikeDislike from './LikeDislike';
 
 function SingleComment({ comment, videoId, refreshFunction }) {
   const user = useSelector((state) => state.user); // redux store에서 user.userData 가져오기
@@ -14,7 +15,7 @@ function SingleComment({ comment, videoId, refreshFunction }) {
   };
 
   const onHandleChange = (e) => {
-    // CommentValue => value (mongoDB에 content가 저장안되는 오류 해결)
+    // CommentValue => value | mongoDB에 content가 저장안되는 오류 해결
     setCommentValue(e.currentTarget.value);
   };
 
@@ -43,9 +44,13 @@ function SingleComment({ comment, videoId, refreshFunction }) {
   };
 
   const actions = [
-    <span onClick={onClickReplyOpen} key="comment-basic-reply-to">
+    <LikeDislike
+      userId={localStorage.getItem('userId')}
+      commentId={comment._id}
+    />,
+    <ReplyButton onClick={onClickReplyOpen} key="comment-basic-reply-to">
       답글
-    </span>,
+    </ReplyButton>,
   ];
 
   return (
@@ -164,11 +169,23 @@ const ContentText = styled.p`
 const Actions = styled.div`
   background-color: transparent;
   font-size: 13px;
+  width: auto;
+  border-radius: 18px;
+  text-transform: none;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+`;
+const ReplyButton = styled.span`
+  background-color: transparent;
   width: 44px;
   height: 32px;
   border-radius: 18px;
   text-transform: none;
+  font-size: 12px;
   font-weight: 500;
+  line-height: 18px;
   display: flex;
   align-items: center;
   justify-content: center;

@@ -5,13 +5,14 @@ import styled from 'styled-components';
 import SideVideo from './Sections/SideVideo';
 import Subscribe from './Sections/Subscribe';
 import Comment from './Sections/Comment';
+import LikeDislike from './Sections/LikeDislike';
 
 function VideoDetailPage() {
   const videoId = useParams().videoId; // url에서 video id가져오기
   const videoVariable = { videoId: videoId }; // json 형식으로 보내야 서버에서 알맞게 받을 수 있음
 
   const [VideoDetail, setVideoDetail] = useState([]);
-  const [Comments, setComments] = useState([]);
+  const [Comments, setComments] = useState([]); // 모든 comment들을 관리
 
   useEffect(() => {
     // id를 보내서 해당 video data 가져오기
@@ -65,7 +66,14 @@ function VideoDetailPage() {
               <UserName>{VideoDetail.writer.name}</UserName>
               <SubscribeNumber>구독자 0명</SubscribeNumber>
             </div>
-            {subscribeButton}
+            <Actions>
+              <LikeDislike
+                video
+                userId={localStorage.getItem('userId')}
+                videoId={videoId}
+              />
+              {subscribeButton}
+            </Actions>
           </UserInfo>
           <VideoDescription>{VideoDetail.description}</VideoDescription>
 
@@ -158,6 +166,11 @@ const VideoDescription = styled.div`
   border-radius: 0.75rem;
   margin-top: 1rem;
   margin-bottom: 2rem;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #e8e6e6;
+  }
 `;
 const UserName = styled.p`
   font-size: 16px;
@@ -173,6 +186,13 @@ const UserImage = styled.img`
   border-radius: 50%;
   margin-right: 0.5rem;
   background-color: #000;
+`;
+const Actions = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex: 1;
+  gap: 0.5rem;
 `;
 
 export default VideoDetailPage;
